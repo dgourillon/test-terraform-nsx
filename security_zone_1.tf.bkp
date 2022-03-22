@@ -1,0 +1,43 @@
+resource "nsxt_policy_tier1_gateway" "z1_tier1_gw" {
+  description               = "Tier-1 provisioned by Terraform"
+  display_name              = "Z1-Tier1-gw1"
+  nsx_id                    = "Z1-Tier1"
+  edge_cluster_path         = data.nsxt_policy_edge_cluster.ec.path
+  failover_mode             = "PREEMPTIVE"
+  default_rule_logging      = "false"
+  enable_firewall           = "true"
+  enable_standby_relocation = "false"
+  tier0_path                = data.nsxt_policy_tier0_gateway.tier0_gw_gateway.path
+  route_advertisement_types = [ "TIER1_CONNECTED"]
+  pool_allocation           = "ROUTING"
+
+  tag {
+    scope = "security_zone"
+    tag   = "Z1"
+  }
+
+}
+
+resource "nsxt_policy_segment" "z1_seg1" {
+  display_name        = "zone1_segment1"
+  description         = "Terraform provisioned Segment"
+  connectivity_path   = nsxt_policy_tier1_gateway.z1_tier1_gw.path
+  transport_zone_path = data.nsxt_policy_transport_zone.overlay_tz.path
+
+  subnet {
+    cidr        = "10.168.40.129/28"
+  }
+
+}
+
+resource "nsxt_policy_segment" "z1_seg2" {
+  display_name        = "zone1_segment2"
+  description         = "Terraform provisioned Segment"
+  connectivity_path   = nsxt_policy_tier1_gateway.z1_tier1_gw.path
+  transport_zone_path = data.nsxt_policy_transport_zone.overlay_tz.path
+
+  subnet {
+    cidr        = "10.168.40.145/28"
+  }
+
+}
