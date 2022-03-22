@@ -32,6 +32,8 @@ do
    sed "s/Z/$ZONE/g" security_zone_template | sed "s/N/$i/g" >> zone$ZONE.tf
 done
 
+mv zone$ZONE.tf zone$ZONE/
+
 ZONE="2"
 
 echo "" > zone$ZONE.tf
@@ -64,6 +66,8 @@ do
    sed "s/Z/$ZONE/g" security_zone_template | sed "s/N/$i/g" >> zone$ZONE.tf
 done
 
+mv zone$ZONE.tf zone$ZONE/
+
 ZONE="3"
 
 echo "" > zone$ZONE.tf
@@ -95,3 +99,5 @@ for i in {151..250}
 do
    sed "s/Z/$ZONE/g" security_zone_template | sed "s/N/$i/g" >> zone$ZONE.tf
 done
+
+mv zone$ZONE.tf zone$ZONE/
